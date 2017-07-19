@@ -19,7 +19,6 @@ if __name__ == '__main__':
 		topics.append(possible_topic)
 		if len(topics) == int(os.environ.get('N_TOPICS_TO_POST')):
 			break
-	print 'test'
 	post_title = 'Daily Discussion %s' % datetime.datetime.now(pytz.timezone('America/Chicago')).strftime('%-m/%-d')
 	post_text = '\n\n\n'.join(['%d) %s' % (i + 1, topics[i]) for i in xrange(len(topics))])
 	print '\n' + post_title + '\n----------------------\n'
