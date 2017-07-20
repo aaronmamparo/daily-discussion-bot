@@ -19,6 +19,9 @@ if __name__ == '__main__':
 		topics.append(possible_topic)
 		if len(topics) == int(os.environ.get('N_TOPICS_TO_POST')):
 			break
+	for topic in topics:
+		r.set(topic, '')
+		r.expire(topic, 2628000)
 	post_title = 'Daily Discussion %s' % datetime.datetime.now(pytz.timezone('America/Chicago')).strftime('%-m/%-d')
 	post_text = '\n\n&nbsp;\n\n'.join(['%s%s' % ('' if i==0 else ('ALT%s: ' % (i if i>1 else '')), topics[i]) for i in xrange(len(topics))])
 	print '\n' + post_title + '\n----------------------\n'
@@ -31,9 +34,13 @@ if __name__ == '__main__':
 		password=os.environ.get('REDDIT_PASSWORD')
 	)
 	subreddit = reddit.subreddit(os.environ.get('SUBREDDIT'))
-	subreddit.submit(post_title, selftext=post_text, send_replies=False)
-	for topic in topics:
-		r.set(topic, '')
-		r.expire(topic, 2628000)
+	new_submission = subreddit.submit(post_title, selftext=post_text, send_replies=False)
+	try:
+		for submission in subreddit.hot(limit=10):
+			if submission.stickied and submission.author == os.environ.get('REDDIT_USERNAME'):
+				submission.mod.sticky(state=False)
+		new_submission.mod.sticky(state=True, bottom=True)
+	except:
+		print 'Not a moderator! Cannot sticky!'
 
 
