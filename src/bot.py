@@ -20,7 +20,7 @@ if __name__ == '__main__':
 		if len(topics) == int(os.environ.get('N_TOPICS_TO_POST')):
 			break
 	post_title = 'Daily Discussion %s' % datetime.datetime.now(pytz.timezone('America/Chicago')).strftime('%-m/%-d')
-	post_text = '\n\n\n'.join(['%d) %s' % (i + 1, topics[i]) for i in xrange(len(topics))])
+	post_text = '\n\n&nbsp;\n\n'.join(['%s%s' % ('' if i==0 else ('ALT%s: ' % (i if i>1 else '')), topics[i]) for i in xrange(len(topics))])
 	print '\n' + post_title + '\n----------------------\n'
 	print post_text
 	reddit = praw.Reddit(
