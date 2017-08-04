@@ -14,7 +14,7 @@ if __name__ == '__main__':
 	random.shuffle(possible_topics)
 	topics = []
 	for possible_topic in possible_topics:
-		if r.get(possible_topic):
+		if r.exists(possible_topic):
 			continue
 		topics.append(possible_topic)
 		if len(topics) == int(os.environ.get('N_TOPICS_TO_POST')):
