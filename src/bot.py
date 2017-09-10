@@ -39,7 +39,7 @@ if __name__ == '__main__':
 		for submission in subreddit.hot(limit=10):
 			if submission.stickied and submission.author == os.environ.get('REDDIT_USERNAME'):
 				submission.mod.sticky(state=False)
-		new_submission.mod.sticky(state=True, bottom=True)
+		new_submission.mod.sticky(state=True)
 	except:
 		print 'Not a moderator! Cannot sticky!'
 
