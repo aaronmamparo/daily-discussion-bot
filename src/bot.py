@@ -23,7 +23,7 @@ if __name__ == '__main__':
 	for topic in topics:
 		r.set(topic, '')
 		r.expire(topic, 31540000)
-	post_title = 'Daily Discussion %s' % datetime.datetime.now(pytz.timezone('America/Chicago')).strftime('%-m/%-d')
+	post_title = 'Daily Discussion %s' % datetime.datetime.now(pytz.timezone('America/Chicago')).strftime('%m/%d').replace(' 0', ' ').replace('/0', '/')
 	post_text = '\n\n&nbsp;\n\n'.join(['%s%s' % ('' if i==0 else ('ALT%s: ' % (i if i>1 else '')), topics[i]) for i in xrange(len(topics))])
 	reddit = praw.Reddit(
 		client_id=environ.get('REDDIT_CLIENT_ID'),
