@@ -1,0 +1,36 @@
+jobs: 
+  deploy:
+    docker:
+      - image: node:8.9.4
+    steps:
+      - checkout
+      - run:
+          name: CHMOD
+          command: chmod +x .circleci/*.sh
+      - run:
+          name: Check environment variables
+          command: ./.circleci/check_env_vars.sh
+      - run:
+          name: Install AWS CLI dependencies
+          command: ./.circleci/install_dependencies.sh
+      - run:
+          name: Configure AWS session
+          command: ./.circleci/configure_session.sh
+      - run:
+          name: Create AWS resource group
+          command: ./.circleci/create_resource_group.sh
+      - run:
+          name: Deploy to Lambda
+          command: |
+            EB_ENV="${PROJECT_NAME}-prod"
+            eb init "${PROJECT_NAME}" -v -p "Docker 17.09.1-ce" -r "us-east-1"
+            eb create ${EB_ENV} -v || eb deploy ${EB_ENV} -v
+            eb tags ${EB_ENV} -v -a Project=${PROJECT_NAME} || eb tags ${EB_ENV} -v -u Project=${PROJECT_NAME}
+            rm -rf .elasticbeanstalk
+
+workflows:
+  version: 2
+  deploy: 
+    jobs:
+      - deploy:
+          context: AWS
