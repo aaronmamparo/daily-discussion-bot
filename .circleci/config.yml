@@ -33,6 +33,16 @@ jobs:
                 --resource-query ${RESOURCE_QUERY}
             }
       - run:
+          name: Create ElastiCache instance
+          command: |
+            aws elasticache create-cache-cluster \
+              --cache-cluster-id "${PROJECT_NAME}" \
+              --engine redis \
+              --az-mode single-az \
+              --preferred-availability-zone us-east-1 \
+              --cache-node-type cache.t2.micro \
+              --tags Project=${PROJECT_NAME}
+      - run:
           name: Deploy Lambda function
           command: |
             rm -rf .deploy
