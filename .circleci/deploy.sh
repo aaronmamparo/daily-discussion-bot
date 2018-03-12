@@ -12,14 +12,12 @@ create_resource_group() {
 	{
 		aws resource-groups update-group-query \
 			--group-name ${PROJECT_NAME} \
-			--resource-query ${RESOURCE_QUERY} \
-			--region "us-east-1"
+			--resource-query ${RESOURCE_QUERY}
 	} || {
 		aws resource-groups create-group \
 			--name ${PROJECT_NAME} \
 			--description "${PROJECT_DESCRIPTION}" \
-			--resource-query ${RESOURCE_QUERY} \
-			--region "us-east-1"
+			--resource-query ${RESOURCE_QUERY}
 	}
 }
 
@@ -33,5 +31,6 @@ deploy_lambda_function() {
 }
 
 install_dependencies
+aws configure set region = "us-east-1"
 create_resource_group
 deploy_lambda_function
