@@ -8,17 +8,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: CHMOD
-          command: chmod +x .circleci/*.sh
-      - run:
-          name: Install AWS CLI dependencies
-          command: ./.circleci/install_dependencies.sh
-      - run:
-          name: Create AWS resource group
-          command: ./.circleci/create_resource_group.sh
-      - run:
-          name: Deploy to Lambda
-          command: ./.circleci/deploy_to_lambda.sh
+          name: Deploy
+          command: chmod +x .circleci/deploy.sh && ./.circleci/deploy.sh
 
 workflows:
   version: 2
