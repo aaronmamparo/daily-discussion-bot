@@ -31,6 +31,6 @@ deploy_lambda_function() {
 }
 
 install_dependencies
-aws configure set region = "us-east-1"
+aws configure set region us-east-1
 create_resource_group
 deploy_lambda_function
