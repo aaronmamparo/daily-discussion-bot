@@ -4,7 +4,7 @@ jobs:
       - image: ubuntu:latest
     environment:
       - PROJECT_NAME: "daily-discussion-bot"
-      - PROJECT_DESCRIPTION: "Daily Discussion bot for r/CHICUBS"
+      - PROJECT_DESCRIPTION: "Daily Discussion bot for chicubs subreddit"
     steps:
       - checkout
       - run:
