@@ -2,20 +2,17 @@ jobs:
   deploy:
     docker:
       - image: ubuntu:latest
+    environment:
+      - PROJECT_NAME: "daily-discussion-bot"
+      - PROJECT_DESCRIPTION: "Daily Discussion bot for r/CHICUBS"
     steps:
       - checkout
       - run:
           name: CHMOD
           command: chmod +x .circleci/*.sh
       - run:
-          name: Check environment variables
-          command: ./.circleci/check_env_vars.sh
-      - run:
           name: Install AWS CLI dependencies
           command: ./.circleci/install_dependencies.sh
-      - run:
-          name: Configure AWS session
-          command: ./.circleci/configure_session.sh
       - run:
           name: Create AWS resource group
           command: ./.circleci/create_resource_group.sh
