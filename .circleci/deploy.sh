@@ -44,7 +44,7 @@ deploy_lambda_function() {
 		--publish
 }
 
-#install_dependencies
+install_dependencies
 set_region
-#create_resource_group
+create_resource_group
 deploy_lambda_function
