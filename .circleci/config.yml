@@ -41,7 +41,7 @@ jobs:
               --az-mode single-az \
               --preferred-availability-zone us-east-1 \
               --cache-node-type cache.t2.micro \
-              --tags Project=${PROJECT_NAME}
+              --tags Key=Project,Value=${PROJECT_NAME}
       - run:
           name: Deploy Lambda function
           command: |
