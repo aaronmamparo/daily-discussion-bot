@@ -4,7 +4,7 @@ set -eo pipefail
 install_dependencies() {
 	apt-get -y -qq update
 	apt-get -y install python-pip python-dev build-essential
-	pip install awscli --upgrade
+	pip install awscli zip --upgrade
 }
 
 set_region() {
