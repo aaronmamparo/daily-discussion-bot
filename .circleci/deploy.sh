@@ -27,12 +27,14 @@ create_resource_group() {
 }
 
 deploy_lambda_function() {
-	aws lambda create-function \
-		--function-name ${PROJECT_NAME} \
-		--role ${LAMBDA_ROLE_ARN} \
-		--handler handler \
-		--runtime python2.7 \
-		--tags Project=${PROJECT_NAME}
+	aws s3api create-bucket ${PROJECT_NAME}
+	# aws lambda create-function \
+	# 	--function-name ${PROJECT_NAME} \
+	# 	--role ${LAMBDA_ROLE_ARN} \
+	# 	--handler handler \
+	# 	--runtime python2.7 \
+	# 	--tags Project=${PROJECT_NAME} \
+	# 	--code
 }
 
 install_dependencies
