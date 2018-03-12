@@ -44,7 +44,7 @@ deploy_lambda_function() {
 		--zip-file "fileb://deploy.zip" \
 		--publish
 }
-
+ 
 install_dependencies
 set_region
 create_resource_group
