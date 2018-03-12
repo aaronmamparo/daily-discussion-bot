@@ -34,6 +34,7 @@ deploy_lambda_function() {
 	cp -rf src/* .deploy
 	cd .deploy
 	zip -r deploy.zip .
+	echo ${LAMBDA_ROLE_ARN}
 	aws lambda create-function \
 		--function-name ${PROJECT_NAME} \
 		--role ${LAMBDA_ROLE_ARN} \
