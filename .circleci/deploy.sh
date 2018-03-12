@@ -7,6 +7,11 @@ install_dependencies() {
 	pip install awscli --upgrade
 }
 
+set_region() {
+	aws configure set region "us-east-1"
+	aws configure set default.region "us-east-1"
+}
+
 create_resource_group() {
 	RESOURCE_QUERY='{"Type":"TAG_FILTERS_1_0","Query":"{\"ResourceTypeFilters\":[\"AWS::AllSupported\"],\"TagFilters\":[{\"Key\":\"Project\",\"Values\":[\"'"${PROJECT_NAME}"'\"]}]}"}'
 	{
@@ -31,6 +36,5 @@ deploy_lambda_function() {
 }
 
 install_dependencies
-aws configure set region us-east-1
 create_resource_group
 deploy_lambda_function
