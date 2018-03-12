@@ -36,5 +36,6 @@ deploy_lambda_function() {
 }
 
 install_dependencies
+set_region
 create_resource_group
 deploy_lambda_function
