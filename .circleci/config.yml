@@ -42,15 +42,21 @@ jobs:
             cp -rf src/* .deploy
             cd .deploy
             zip -r deploy.zip .
-            echo ${LAMBDA_ROLE_ARN}
-            aws lambda create-function \
-              --function-name ${PROJECT_NAME} \
-              --role ${LAMBDA_ROLE_ARN} \
-              --handler lambda.handler \
-              --runtime python2.7 \
-              --tags Project=${PROJECT_NAME} \
-              --zip-file "fileb://deploy.zip" \
-              --publish
+            ZIP_FILE_PATH="fileb://deploy.zip"
+            {
+              aws lambda create-function \
+                --function-name ${PROJECT_NAME} \
+                --role ${LAMBDA_ROLE_ARN} \
+                --handler lambda.handler \
+                --runtime python2.7 \
+                --tags Project=${PROJECT_NAME} \
+                --zip-file "${ZIP_FILE_PATH}" \
+                --publish
+            } || {
+              aws lambda update-function-code \
+                --function-name ${PROJECT_NAME} \
+                --zip-file "${ZIP_FILE_PATH}"
+            }
 
 workflows:
   version: 2
