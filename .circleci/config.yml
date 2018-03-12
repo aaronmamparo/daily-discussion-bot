@@ -8,8 +8,49 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Deploy
-          command: chmod +x .circleci/deploy.sh && ./.circleci/deploy.sh
+          name: Install dependencies
+          command: |
+            apt-get -y -qq update
+            apt-get -y install python-pip python-dev build-essential zip
+            pip install awscli --upgrade
+      - run:
+          name: Set AWS region
+          command: |
+            aws configure set region "us-east-1"
+            aws configure set default.region "us-east-1"
+      - run:
+          name: Create AWS resource group
+          command: |
+            RESOURCE_QUERY='{"Type":"TAG_FILTERS_1_0","Query":"{\"ResourceTypeFilters\":[\"AWS::AllSupported\"],\"TagFilters\":[{\"Key\":\"Project\",\"Values\":[\"'"${PROJECT_NAME}"'\"]}]}"}'
+            {
+              aws resource-groups update-group-query \
+                --group-name ${PROJECT_NAME} \
+                --resource-query ${RESOURCE_QUERY}
+            } || {
+              aws resource-groups create-group \
+                --name ${PROJECT_NAME} \
+                --description "${PROJECT_DESCRIPTION}" \
+                --resource-query ${RESOURCE_QUERY}
+            }
+      - run:
+          name: Deploy Lambda function
+          command: |
+            rm -rf .deploy
+            mkdir .deploy
+            pip install -r requirements.txt -t .deploy
+            echo -e "[install]\nprefix=" > .deploy/setup.cfg
+            cp -rf src/* .deploy
+            cd .deploy
+            zip -r deploy.zip .
+            echo ${LAMBDA_ROLE_ARN}
+            aws lambda create-function \
+              --function-name ${PROJECT_NAME} \
+              --role ${LAMBDA_ROLE_ARN} \
+              --handler lambda.handler \
+              --runtime python2.7 \
+              --tags Project=${PROJECT_NAME} \
+              --zip-file "fileb://deploy.zip" \
+              --publish
 
 workflows:
   version: 2
