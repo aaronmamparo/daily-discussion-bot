@@ -4,7 +4,11 @@ load_dotenv(find_dotenv())
 from os import environ, path
 import json, random, datetime, pytz, praw, redis
 
-if __name__ == '__main__':
+def handler(event, context):
+	print event
+	print context
+
+def _(event, context):
 	r = redis.StrictRedis(
 		host=environ.get('REDIS_HOST'),
 		port=environ.get('REDIS_PORT'),

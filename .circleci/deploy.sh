@@ -27,17 +27,24 @@ create_resource_group() {
 }
 
 deploy_lambda_function() {
-	aws s3api create-bucket --bucket lambda
-	# aws lambda create-function \
-	# 	--function-name ${PROJECT_NAME} \
-	# 	--role ${LAMBDA_ROLE_ARN} \
-	# 	--handler handler \
-	# 	--runtime python2.7 \
-	# 	--tags Project=${PROJECT_NAME} \
-	# 	--code
+	rm -rf .deploy
+	mkdir .deploy
+	pip install -r requirements.txt -t .deploy
+	echo -e "[install]\nprefix=" > .deploy/setup.cfg
+	cp -rf src/* .deploy
+	cd .deploy
+	zip -r deploy.zip .
+	aws lambda create-function \
+		--function-name ${PROJECT_NAME} \
+		--role ${LAMBDA_ROLE_ARN} \
+		--handler lambda.handler \
+		--runtime python2.7 \
+		--tags Project=${PROJECT_NAME} \
+		--zip-file "fileb://deploy.zip" \
+		--publish
 }
 
-install_dependencies
+#install_dependencies
 set_region
-create_resource_group
+#create_resource_group
 deploy_lambda_function
