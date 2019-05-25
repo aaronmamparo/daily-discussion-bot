@@ -38,7 +38,7 @@ try:
 			submission.mod.sticky(state=False)
 except:
 	print 'Not a moderator! Cannot sticky!'
-new_submission = subreddit.submit(post_title, selftext=post_text, send_replies=False)
+new_submission = subreddit.submit(post_title, selftext='', send_replies=False)
 try:
 	new_submission.mod.sticky(state=True)
 except:
